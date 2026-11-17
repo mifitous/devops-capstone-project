@@ -2,7 +2,7 @@
 Account API Service Test Suite
 
 Test cases can be run with the following:
-  nosetests -v --with-spec --spec-color
+  pytest -v
   coverage report -m
 """
 import os

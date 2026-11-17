@@ -59,7 +59,9 @@ class PersistentBase:
         logger.info("Initializing database")
         cls.app = app
         # This is where we initialize SQLAlchemy from the Flask app
-        db.init_app(app)
+        # Flask-SQLAlchemy >= 3.1 raises if the extension is registered twice
+        if "sqlalchemy" not in app.extensions:
+            db.init_app(app)
         app.app_context().push()
         db.create_all()  # make our sqlalchemy tables
 
@@ -73,7 +75,7 @@ class PersistentBase:
     def find(cls, by_id):
         """Finds a record by it's ID"""
         logger.info("Processing lookup for id %s ...", by_id)
-        return cls.query.get(by_id)
+        return db.session.get(cls, by_id)
 
 
 ######################################################################
